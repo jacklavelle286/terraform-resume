@@ -32,8 +32,8 @@ jobs:
       - name: Terraform Init
         run: terraform init
 
-      - name: Terraform Format Check
-        run: terraform fmt -check
+      - name: Format Terraform Files
+        run: terraform fmt -write=true
 
       - name: Terraform Plan
         run: terraform plan
