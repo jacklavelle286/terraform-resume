@@ -14,7 +14,7 @@ module "private_subnet_1" {
 }
 
 
-module "private_subnet_1" {
+module "private_subnet_2" {
   source = "./modules/subnet"
   subnet_cidr_block = "10.0.2.0/24"
   subnet_name = "Private-2-App-VPC"
