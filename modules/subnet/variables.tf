@@ -5,3 +5,7 @@ variable "subnet_name" {
 variable "subnet_cidr_block" {
   type = string
 }
+
+variable "vpc_id" {
+  type = string
+}
