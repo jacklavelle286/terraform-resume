@@ -27,3 +27,16 @@ module "private_route_table" {
   cidr_block = module.app_vpc.vpc_cidr_block
   gateway_id = "local"
 }
+
+
+module "private_subnet_1_rtb_assoc" {
+  source = "./modules/route_table_association"
+  route_table_id = module.private_route_table.route_table_id
+  subnet_id = module.private_subnet_1.subnet_id
+}
+
+module "private_subnet_2_rtb_assoc" {
+  source = "./modules/route_table_association"
+  route_table_id = module.private_route_table.route_table_id
+  subnet_id = module.private_subnet_2.subnet_id
+}
