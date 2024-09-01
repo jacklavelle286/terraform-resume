@@ -9,3 +9,7 @@ variable "instance_type" {
 variable "security_group_names" {
   type = list(string)
 }
+
+variable "launch_template_name" {
+  type = string
+}
