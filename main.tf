@@ -91,7 +91,7 @@ module "public_subnet_1_rtb_assoc" {
 module "public_subnet_2_rtb_assoc" {
   source = "./modules/route_table_association"
   route_table_id = module.public_route_table.route_table_id
-  subnet_id = module.public_subnet_1.subnet_id
+  subnet_id = module.public_subnet_2.subnet_id
 }
 
 
