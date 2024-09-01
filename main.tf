@@ -116,6 +116,8 @@ module "inbound_alb_sg_rule_https_from_web" {
 
 module "app_sg" {
   source = "./modules/security_group"
+  security_group_name = "app-security-group"
+  vpc_id = module.cv-app_vpc.vpc_id
 }
 
 
@@ -136,7 +138,7 @@ module "inbound_app_sg_rule_http_from_alb" {
 module "app_launch_template" {
   source = "./modules/launch_template"
   app_image_id = var.latest_app_image_id
-  security_group_names = [  ]
+  security_group_names = [module.app_sg.sg_name]
   launch_template_name = "app_launch_template"
   instance_type = "t2.micro"
 }
