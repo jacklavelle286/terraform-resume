@@ -148,8 +148,8 @@ module "app_autoscaling_group" {
   source = "./modules/autoscaling_group"
   launch_template_id = module.app_launch_template.launch_template_id
   availability_zones = [
-   module.private_subnet_1.subnet_az,
-   module.private_subnet_2.subnet_az
+   module.private_subnet_1.availability_zone,
+   module.private_subnet_2.availability_zone
   ]
 }
 
