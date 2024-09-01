@@ -17,3 +17,7 @@ variable "desired" {
 variable "launch_template_id" {
   type = string
 }
+
+variable "availability_zones" {
+  type = list(string)
+}
