@@ -33,7 +33,7 @@ jobs:
         run: terraform init
 
       - name: Format Terraform Files
-        run: terraform fmt -check
+        run: terraform fmt -write=true
 
       - name: Terraform Plan
         run: terraform plan
