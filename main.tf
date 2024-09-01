@@ -12,7 +12,7 @@ module "private_subnet_1" {
   source = "./modules/subnet"
   subnet_cidr_block = "10.0.1.0/24"
   subnet_name = "Private-1-CV-App-VPC"
-  vpc_id = module.cv-app_vpc
+  vpc_id = module.cv-app_vpc.vpc_id
   subnet_az = "us-east-1a"
 }
 
@@ -27,8 +27,8 @@ module "private_subnet_2" {
 
 module "private_route_table" {
   source = "./modules/route_table"
-  vpc_id = module.CV-App_vpc.vpc_id
-  cidr_block = module.av-app_vpc.vpc_cidr_block
+  vpc_id = module.cv-app_vpc.vpc_id
+  cidr_block = module.cv-app_vpc.vpc_cidr_block
   gateway_id = "local"
 }
 
@@ -56,7 +56,7 @@ module "internet_gateway" {
 module "public_subnet_1" {
   source = "./modules/subnet"
   subnet_cidr_block = "10.0.3.0/24"
-  vpc_id = module.CV-App_vpc.vpc_id
+  vpc_id = module.cv-app_vpc.vpc_id
   subnet_name = "Public-1-CV-App-VPC"
   subnet_az = "us-east-1a"
 }
@@ -64,7 +64,7 @@ module "public_subnet_1" {
 module "public_subnet_2" {
   source = "./modules/subnet"
   subnet_cidr_block = "10.0.4.0/24"
-  vpc_id = module.CV-App_vpc.vpc_id
+  vpc_id = module.cv-app_vpc.vpc_id
   subnet_name = "Public-2-CV-App-VPC"
   subnet_az = "us-east-1b"
 }
