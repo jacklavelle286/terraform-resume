@@ -53,6 +53,12 @@ module "internet_gateway" {
  source = "./modules/internet_gateway"
 } 
 
+module "igw_attachment" {
+ source = "./modules/internet_gateway_attachment"
+ vpc_id = module.cv-app_vpc.vpc_id
+ internet_gateway_id = module.internet_gateway.igw_id
+}
+
 module "public_subnet_1" {
   source = "./modules/subnet"
   subnet_cidr_block = "10.0.3.0/24"
