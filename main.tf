@@ -138,7 +138,9 @@ module "inbound_app_sg_rule_http_from_alb" {
 module "app_launch_template" {
   source = "./modules/launch_template"
   app_image_id = var.latest_app_image_id
-  security_group_ids = module.app_sg.sg_id
+  security_group_ids = [
+   module.app_sg.sg_id
+  ]
   launch_template_name = "app_launch_template"
   instance_type = "t2.micro"
 
