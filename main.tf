@@ -141,4 +141,19 @@ module "app_launch_template" {
   security_group_names = [module.app_sg.sg_name]
   launch_template_name = "app_launch_template"
   instance_type = "t2.micro"
+
+}
+
+module "app_autoscaling_group" {
+  source = "./modules/autoscaling_group"
+  launch_template_id = module.app_launch_template.launch_template_id
+}
+
+
+module "app_alb" {
+ source = "./modules/application_load_balancer"
+ security_groups = [ module.alb_sg.sg_id ]
+ alb_subnets = [ module.private_subnet_1.subnet_id , module.private_subnet_2.subnet_id ]
+ alb_security_groups = [ module.app_sg.sg_id ]
+ alb_name = "App-ALB"
 }
