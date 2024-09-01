@@ -1,0 +1,1 @@
+latest_app_image_id = "ami-057660df437592ff2"

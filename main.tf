@@ -94,4 +94,24 @@ module "public_subnet_2_rtb_assoc" {
   subnet_id = module.public_subnet_2.subnet_id
 }
 
+# security groups and rules
 
+module "app_sg" {
+  source = "./modules/security_group"
+  security_group_name = "apg-security-group"
+  vpc_id = module.cv-app_vpc.vpc_id
+}
+
+
+
+
+# app resources
+
+
+module "app_launch_template" {
+  source = "./modules/launch_template"
+  app_image_id = var.latest_app_image_id
+  security_group_names = [  ]
+  launch_template_name = "app_launch_template"
+  instance_type = "t2.micro"
+}
