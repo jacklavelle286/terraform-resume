@@ -6,7 +6,7 @@ variable "instance_type" {
   type = string
 }
 
-variable "security_group_names" {
+variable "security_group_ids" {
   type = list(string)
 }
 
