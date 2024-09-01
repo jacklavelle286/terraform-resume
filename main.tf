@@ -95,14 +95,3 @@ module "public_subnet_2_rtb_assoc" {
 }
 
 
-module "private_subnet_1_private_rtb_assoc" {
-  source = "./modules/route_table_association"
-  route_table_id = module.private_route_table.route_table_id
-  subnet_id = module.public_subnet_1.subnet_id
-}
-
-module "private_subnet_2_private_rtb_assoc" {
-  source = "./modules/route_table_association"
-  route_table_id = module.private_route_table.route_table_id
-  subnet_id = module.public_subnet_1.subnet_id
-}
