@@ -96,13 +96,40 @@ module "public_subnet_2_rtb_assoc" {
 
 # security groups and rules
 
+
+module "alb_sg" {
+  source = "./modules/security_group"
+  security_group_name = "alb-security-group"
+  vpc_id = module.cv-app_vpc.vpc_id
+}
+
+module "inbound_alb_sg_rule_https_from_web" {
+  source = "./modules/security_group_rules/ingress"
+  from_port = 443
+  to_port = 443
+  security_group_id = module.app_sg.sg_id
+  cidr_ipv4 = "0.0.0.0/0"
+  ip_protocol = "tcp"
+  inbound_sg_id = null
+}
+
+
 module "app_sg" {
   source = "./modules/security_group"
-  security_group_name = "apg-security-group"
+  security_group_name = "app-security-group"
   vpc_id = module.cv-app_vpc.vpc_id
 }
 
 
+module "inbound_app_sg_rule_http_from_alb" {
+  source            = "./modules/security_group_rules/ingress"
+  from_port         = 80
+  to_port           = 80
+  security_group_id = module.app_sg.sg_id
+  ip_protocol       = "tcp"
+  inbound_sg_id     = module.alb_sg.sg_id
+  cidr_ipv4         = null  # Set to null since inbound_sg_id is used
+}
 
 
 # app resources
