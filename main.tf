@@ -116,8 +116,6 @@ module "inbound_alb_sg_rule_https_from_web" {
 
 module "app_sg" {
   source = "./modules/security_group"
-  security_group_name = "app-security-group"
-  vpc_id = module.cv-app_vpc.vpc_id
 }
 
 
