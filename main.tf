@@ -107,7 +107,7 @@ module "inbound_alb_sg_rule_https_from_web" {
   source = "./modules/security_group_rules/ingress"
   from_port = 443
   to_port = 443
-  security_group_id = module.app_sg.sg_id
+  security_group_id = module.alb_sg.sg_id
   cidr_ipv4 = "0.0.0.0/0"
   ip_protocol = "tcp"
   inbound_sg_id = null
