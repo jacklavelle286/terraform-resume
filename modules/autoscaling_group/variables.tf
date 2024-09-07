@@ -18,6 +18,6 @@ variable "launch_template_id" {
   type = string
 }
 
-variable "availability_zones" {
+variable "vpc_zone_identifier" {
   type = list(string)
 }
