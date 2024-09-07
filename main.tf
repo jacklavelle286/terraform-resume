@@ -174,3 +174,18 @@ module "target_group" {
   protocol = "TCP"
   aws_lb_tg_name = "app-target-group"
 }
+
+module "alb_listener" {
+  source = "./modules/alb_listener"
+  lb_arn = module.app_alb.alb_arn
+  cert_arn = module.cert.acm_cert_arn
+  tg_arn = module.target_group.target_group_arn
+}
+
+module "cert" {
+  source = "./modules/cert"
+  domain_name = "jackaws.com"
+}
+
+
+# make cert validation x
