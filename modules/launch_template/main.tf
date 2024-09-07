@@ -3,9 +3,5 @@ resource "aws_launch_template" "this" {
  vpc_security_group_ids = var.security_group_ids
  instance_type = var.instance_type
  name = var.launch_template_name
- network_interfaces {
-   associate_public_ip_address = true
-   security_groups = var.security_group_ids
- }
 
 }
