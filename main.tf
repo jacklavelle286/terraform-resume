@@ -150,6 +150,7 @@ module "app_autoscaling_group" {
   source = "./modules/autoscaling_group"
   launch_template_id = module.app_launch_template.launch_template_id
   vpc_zone_identifier = [module.private_subnet_1.subnet_id, module.private_subnet_2.subnet_id]
+  tg_arn = [module.target_group.target_group_arn]
 }
 
 
@@ -165,3 +166,11 @@ module "app_alb" {
 
 }
 
+
+module "target_group" {
+  source = "./modules/target_group"
+  port = 80
+  vpc_id = module.cv-app_vpc.vpc_id
+  protocol = "TCP"
+  aws_lb_tg_name = "app-target-group"
+}

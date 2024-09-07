@@ -21,3 +21,7 @@ variable "launch_template_id" {
 variable "vpc_zone_identifier" {
   type = list(string)
 }
+
+variable "tg_arn" {
+  type = list(string)
+}
