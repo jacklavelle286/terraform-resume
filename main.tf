@@ -188,4 +188,18 @@ module "cert" {
 }
 
 
-# make cert validation x
+module "cert_validation" {
+  source                = "./modules/cert_validation"
+  certificate_arn       = module.acm_cert.certificate_arn
+  validation_record_fqdns = module.route53_dns_validation.record_fqdns
+}
+
+data "aws_route53_zone" "example_com" {
+  name         = "example.com"
+  private_zone = false
+}
+
+data "aws_route53_zone" "example_org" {
+  name         = "example.org"
+  private_zone = false
+}
