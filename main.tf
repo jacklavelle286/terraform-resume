@@ -194,6 +194,15 @@ module "cert_validation" {
   validation_record_fqdns = module.route53_dns_validation.record_fqdns
 }
 
+
+module "route53_dns_validation" {
+  source = "./modules/route53_dns_validation"
+  domain_validation_options = module.acm_cert.domain_validation_options
+  zones = {
+    "jackaws.com" = data.aws_route53_zone.example_com.zone_id
+  }
+}
+
 data "aws_route53_zone" "jackaws" {
   name         = "jackaws.com"
   private_zone = false
