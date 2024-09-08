@@ -194,7 +194,7 @@ module "cert_validation" {
   validation_record_fqdns = module.route53_dns_validation.record_fqdns
 }
 
-data "aws_route53_zone" "jackaws.com" {
+data "aws_route53_zone" "jackaws" {
   name         = "jackaws.com"
   private_zone = false
 }
