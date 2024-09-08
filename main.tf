@@ -190,16 +190,37 @@ module "cert" {
 
 module "cert_validation" {
   source                = "./modules/cert_validation"
-  certificate_arn       = module.acm_cert.certificate_arn
+  certificate_arn       = module.cert.acm_cert_arn
   validation_record_fqdns = module.route53_dns_validation.record_fqdns
 }
 
-data "aws_route53_zone" "example_com" {
-  name         = "example.com"
+data "aws_route53_zone" "jackaws.com" {
+  name         = "jackaws.com"
   private_zone = false
 }
 
-data "aws_route53_zone" "example_org" {
-  name         = "example.org"
-  private_zone = false
+# A Record for jackaws.com (naked domain)
+resource "aws_route53_record" "example_com_root" {
+  zone_id = data.aws_route53_zone.example_com.zone_id
+  name    = "jackaws.com"
+  type    = "A"
+
+  alias {
+    name                   = aws_lb.example.dns_name
+    zone_id                = aws_lb.example.zone_id
+    evaluate_target_health = true
+  }
+}
+
+# A Record for www.jackaws.com (www subdomain)
+resource "aws_route53_record" "example_com_www" {
+  zone_id = data.aws_route53_zone.example_com.zone_id
+  name    = "www.jackaws.com"
+  type    = "A"
+
+  alias {
+    name                   = aws_lb.example.dns_name
+    zone_id                = aws_lb.example.zone_id
+    evaluate_target_health = true
+  }
 }
