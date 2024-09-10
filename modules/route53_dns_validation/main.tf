@@ -23,6 +23,4 @@ resource "aws_route53_record" "this" {
   zone_id         = each.value.zone_id
 }
 
-output "record_fqdns" {
-  value = aws_route53_record.this[*].fqdn
-}
+
