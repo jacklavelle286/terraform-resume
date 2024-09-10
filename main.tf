@@ -197,9 +197,9 @@ module "cert_validation" {
 
 module "route53_dns_validation" {
   source = "./modules/route53_dns_validation"
-  domain_validation_options = module.acm_cert.domain_validation_options
+  domain_validation_options = module.cert.domain_validation_options
   zones = {
-    "jackaws.com" = data.aws_route53_zone.example_com.zone_id
+    "jackaws.com" = data.aws_route53_zone.jackaws.zone_id
   }
 }
 
@@ -210,26 +210,26 @@ data "aws_route53_zone" "jackaws" {
 
 # A Record for jackaws.com (naked domain)
 resource "aws_route53_record" "example_com_root" {
-  zone_id = data.aws_route53_zone.example_com.zone_id
+  zone_id = data.aws_route53_zone.jackaws.zone_id
   name    = "jackaws.com"
   type    = "A"
 
   alias {
-    name                   = aws_lb.example.dns_name
-    zone_id                = aws_lb.example.zone_id
+    name                   = module.app_alb.alb_dns_name
+    zone_id                = module.app_alb.alb_zone_id
     evaluate_target_health = true
   }
 }
 
 # A Record for www.jackaws.com (www subdomain)
 resource "aws_route53_record" "example_com_www" {
-  zone_id = data.aws_route53_zone.example_com.zone_id
+  zone_id = data.aws_route53_zone.jackaws.zone_id
   name    = "www.jackaws.com"
   type    = "A"
 
   alias {
-    name                   = aws_lb.example.dns_name
-    zone_id                = aws_lb.example.zone_id
+    name                   = module.app_alb.alb_dns_name
+    zone_id                = module.app_alb.alb_zone_id
     evaluate_target_health = true
   }
 }
