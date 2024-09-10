@@ -219,13 +219,13 @@ resource "aws_route53_record" "example_com_root" {
 
 # A Record for www.jackaws.com (www subdomain)
 resource "aws_route53_record" "example_com_www" {
-  zone_id = data.aws_route53_zone.jackaws.zone_id
+  zone_id = "Z04076261DWCVKSK9O6HF"  
   name    = "www.jackaws.com"
   type    = "A"
 
   alias {
     name                   = module.app_alb.alb_dns_name
-    zone_id                = "Z04076261DWCVKSK9O6HF"
+    zone_id                = module.app_alb.alb_zone_id
     evaluate_target_health = true
   }
 }
