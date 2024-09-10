@@ -203,14 +203,10 @@ module "route53_dns_validation" {
   }
 }
 
-data "aws_route53_zone" "jackaws" {
-  name         = "jackaws.com"
-  private_zone = false
-}
 
 # A Record for jackaws.com (naked domain)
 resource "aws_route53_record" "example_com_root" {
-  zone_id = data.aws_route53_zone.jackaws.zone_id
+  zone_id = "Z04076261DWCVKSK9O6HF"
   name    = "jackaws.com"
   type    = "A"
 
@@ -229,7 +225,7 @@ resource "aws_route53_record" "example_com_www" {
 
   alias {
     name                   = module.app_alb.alb_dns_name
-    zone_id                = module.app_alb.alb_zone_id
+    zone_id                = "Z04076261DWCVKSK9O6HF"
     evaluate_target_health = true
   }
 }
