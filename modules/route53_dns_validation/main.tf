@@ -1,10 +1,3 @@
-data "aws_route53_zone" "this" {
-  for_each = var.zones
-
-  name         = each.value
-  private_zone = false
-}
-
 resource "aws_route53_record" "this" {
   for_each = {
     for dvo in var.domain_validation_options : dvo.domain_name => {
