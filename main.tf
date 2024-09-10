@@ -199,7 +199,7 @@ module "route53_dns_validation" {
   source = "./modules/route53_dns_validation"
   domain_validation_options = module.cert.domain_validation_options
   zones = {
-    "jackaws.com" = data.aws_route53_zone.jackaws.zone_id
+    "jackaws.com" = "Z04076261DWCVKSK9O6HF"
   }
 }
 
