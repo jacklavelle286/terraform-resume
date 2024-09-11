@@ -188,12 +188,6 @@ module "cert" {
 }
 
 
-module "cert_validation" {
-  source                = "./modules/cert_validation"
-  certificate_arn       = module.cert.acm_cert_arn
-  validation_record_fqdns = module.route53_dns_validation.record_fqdns
-}
-
 
 module "route53_dns_validation" {
   source = "./modules/route53_dns_validation"
