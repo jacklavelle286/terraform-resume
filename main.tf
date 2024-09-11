@@ -187,7 +187,7 @@ module "cert" {
   domain_name = "jackaws.com"
 }
 
-
+/*
 
 module "route53_dns_validation" {
   source = "./modules/route53_dns_validation"
@@ -223,3 +223,4 @@ resource "aws_route53_record" "jack_com_www" {
     evaluate_target_health = true
   }
 }
+*/
