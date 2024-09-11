@@ -94,4 +94,97 @@ module "public_subnet_2_rtb_assoc" {
   subnet_id = module.public_subnet_2.subnet_id
 }
 
+# security groups and rules
 
+
+module "alb_sg" {
+  source = "./modules/security_group"
+  security_group_name = "alb-security-group"
+  vpc_id = module.cv-app_vpc.vpc_id
+}
+
+module "inbound_alb_sg_rule_https_from_web" {
+  source = "./modules/security_group_rules/ingress"
+  from_port = 443
+  to_port = 443
+  security_group_id = module.alb_sg.sg_id
+  cidr_ipv4 = "0.0.0.0/0"
+  ip_protocol = "tcp"
+  inbound_sg_id = null
+}
+
+
+module "app_sg" {
+  source = "./modules/security_group"
+  security_group_name = "app-security-group"
+  vpc_id = module.cv-app_vpc.vpc_id
+}
+
+
+module "inbound_app_sg_rule_http_from_alb" {
+  source            = "./modules/security_group_rules/ingress"
+  from_port         = 80
+  to_port           = 80
+  security_group_id = module.app_sg.sg_id
+  ip_protocol       = "tcp"
+  inbound_sg_id     = module.alb_sg.sg_id
+  cidr_ipv4         = null  # Set to null since inbound_sg_id is used
+}
+
+
+# app resources
+
+
+module "app_launch_template" {
+  source = "./modules/launch_template"
+  app_image_id = var.latest_app_image_id
+  security_group_ids = [
+   module.app_sg.sg_id
+  ]
+  launch_template_name = "app_launch_template"
+  instance_type = "t2.micro"
+
+}
+
+module "app_autoscaling_group" {
+  source = "./modules/autoscaling_group"
+  launch_template_id = module.app_launch_template.launch_template_id
+  vpc_zone_identifier = [module.private_subnet_1.subnet_id, module.private_subnet_2.subnet_id]
+  tg_arn = [module.target_group.target_group_arn]
+}
+
+
+module "app_alb" {
+ source = "./modules/application_load_balancer"
+ security_groups = [module.alb_sg.sg_id]
+ alb_subnets = [ 
+  module.private_subnet_1.subnet_id,
+  module.private_subnet_2.subnet_id 
+  ]
+ alb_security_groups = [module.app_sg.sg_id]
+ alb_name = "App-ALB"
+
+}
+
+
+module "target_group" {
+  source = "./modules/target_group"
+  port = 80
+  vpc_id = module.cv-app_vpc.vpc_id
+  protocol = "HTTP"
+  aws_lb_tg_name = "app-target-group"
+}
+
+module "alb_listener" {
+  source = "./modules/alb_listener"
+  lb_arn = module.app_alb.alb_arn
+  cert_arn = module.cert.acm_cert_arn
+  tg_arn = module.target_group.target_group_arn
+}
+
+module "cert" {
+  source = "./modules/cert"
+  domain_name = "jackaws.com"
+}
+
+  
