@@ -171,7 +171,7 @@ module "target_group" {
   source = "./modules/target_group"
   port = 80
   vpc_id = module.cv-app_vpc.vpc_id
-  protocol = "TCP"
+  protocol = "HTTP"
   aws_lb_tg_name = "app-target-group"
 }
 
@@ -187,40 +187,3 @@ module "cert" {
   domain_name = "jackaws.com"
 }
 
-/*
-
-module "route53_dns_validation" {
-  source = "./modules/route53_dns_validation"
-  domain_validation_options = module.cert.domain_validation_options
-  zones = {
-    "jackaws.com" = "Z04076261DWCVKSK9O6HF"
-  }
-}
-
-
-# A Record for jackaws.com (naked domain)
-resource "aws_route53_record" "jack_com_root" {
-  zone_id = "Z04076261DWCVKSK9O6HF"
-  name    = "jackaws.com"
-  type    = "A"
-
-  alias {
-    name                   = module.app_alb.alb_dns_name
-    zone_id                = module.app_alb.alb_zone_id
-    evaluate_target_health = true
-  }
-}
-
-# A Record for www.jackaws.com (www subdomain)
-resource "aws_route53_record" "jack_com_www" {
-  zone_id = "Z04076261DWCVKSK9O6HF"  
-  name    = "www.jackaws.com"
-  type    = "A"
-
-  alias {
-    name                   = module.app_alb.alb_dns_name
-    zone_id                = module.app_alb.alb_zone_id
-    evaluate_target_health = true
-  }
-}
-*/
