@@ -199,7 +199,7 @@ module "route53_dns_validation" {
 
 
 # A Record for jackaws.com (naked domain)
-resource "aws_route53_record" "example_com_root" {
+resource "aws_route53_record" "jack_com_root" {
   zone_id = "Z04076261DWCVKSK9O6HF"
   name    = "jackaws.com"
   type    = "A"
@@ -212,7 +212,7 @@ resource "aws_route53_record" "example_com_root" {
 }
 
 # A Record for www.jackaws.com (www subdomain)
-resource "aws_route53_record" "example_com_www" {
+resource "aws_route53_record" "jack_com_www" {
   zone_id = "Z04076261DWCVKSK9O6HF"  
   name    = "www.jackaws.com"
   type    = "A"
