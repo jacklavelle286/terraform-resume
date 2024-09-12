@@ -191,6 +191,28 @@ module "cert" {
 }
 
 
+data "aws_route53_zone" "your_zone" {
+  name         = "jackaws.com"
+  private_zone = false
+}
+
+resource "aws_route53_record" "cert_validation" {
+  for_each = {
+    for dvo in module.cert.domain_validation_options : dvo.domain_name => {
+      name    = dvo.resource_record_name
+      type    = dvo.resource_record_type
+      record  = dvo.resource_record_value
+      zone_id = data.aws_route53_zone.your_zone.zone_id
+    }
+  }
+
+  zone_id = each.value.zone_id
+  name    = each.value.name
+  type    = each.value.type
+  records = [each.value.record]
+  ttl     = 300
+}
+
 module "cert_validation" {
   source = "./modules/cert_validation"
   certificate_arn = module.cert.acm_cert_arn
@@ -199,5 +221,3 @@ module "cert_validation" {
     for record in aws_route53_record.cert_validation : record.fqdn
   ]
 }
-
-  
