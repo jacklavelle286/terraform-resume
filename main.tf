@@ -185,6 +185,7 @@ module "alb_listener" {
 module "cert" {
   source = "./modules/cert"
   domain_name = "jackaws.com"
+  subject_alternative_names = ["www.jackaws.com"]
 }
 
   
