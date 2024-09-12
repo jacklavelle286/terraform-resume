@@ -180,12 +180,24 @@ module "alb_listener" {
   lb_arn = module.app_alb.alb_arn
   cert_arn = module.cert.acm_cert_arn
   tg_arn = module.target_group.target_group_arn
+  depends_on = module.a
+  
 }
 
 module "cert" {
   source = "./modules/cert"
   domain_name = "jackaws.com"
   subject_alternative_names = ["www.jackaws.com"]
+}
+
+
+module "cert_validation" {
+  source = "./modules/cert_validation"
+  certificate_arn = module.cert.acm_cert_arn
+
+  validation_record_fqdns = [
+    for record in aws_route53_record.cert_validation : record.fqdn
+  ]
 }
 
   
