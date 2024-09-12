@@ -180,7 +180,7 @@ module "alb_listener" {
   lb_arn = module.app_alb.alb_arn
   cert_arn = module.cert.acm_cert_arn
   tg_arn = module.target_group.target_group_arn
-  depends_on = module.cert_validation
+  depends_on = [module.cert_validation]
   
 }
 
