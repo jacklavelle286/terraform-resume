@@ -246,7 +246,7 @@ module "a_record_alias_naked_domain" {
   name = "jackaws.com"
   type = "A"
   alias_name = module.app_alb.alb_dns_name
-  zone_id = data.aws_route53_zone.your_zone
+  zone_id = data.aws_route53_zone.your_zone.zone_id
 }
 
 module "a_record_alias_wwws_domain" {
@@ -254,5 +254,5 @@ module "a_record_alias_wwws_domain" {
   name = "www.jackaws.com"
   type = "A"
   alias_name = module.app_alb.alb_dns_name
-  zone_id = data.aws_route53_zone.your_zone
+  zone_id = data.aws_route53_zone.your_zone.zone_id
 }
