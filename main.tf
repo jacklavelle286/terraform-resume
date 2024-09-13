@@ -114,6 +114,15 @@ module "inbound_alb_sg_rule_https_from_web" {
 }
 
 
+module "outbound_alb_sg_rule_all" {
+  source = "./modules/security_group_rules/egress"
+   cidr_ipv4 = "0.0.0.0/0"
+   security_group_id = module.alb_sg.sg_id
+   from_port = null
+   to_port = null
+   ip_protocol = "-1"
+}
+
 module "app_sg" {
   source = "./modules/security_group"
   security_group_name = "app-security-group"
@@ -129,6 +138,15 @@ module "inbound_app_sg_rule_http_from_alb" {
   ip_protocol       = "tcp"
   inbound_sg_id     = module.alb_sg.sg_id
   cidr_ipv4         = null  # Set to null since inbound_sg_id is used
+}
+
+module "outbound_app_sg_rule_all" {
+  source = "./modules/security_group_rules/egress"
+   cidr_ipv4 = "0.0.0.0/0"
+   security_group_id = module.app_sg.sg_id
+   from_port = null
+   to_port = null
+   ip_protocol = "-1"
 }
 
 
@@ -158,10 +176,10 @@ module "app_alb" {
  source = "./modules/application_load_balancer"
  security_groups = [module.alb_sg.sg_id]
  alb_subnets = [ 
-  module.private_subnet_1.subnet_id,
-  module.private_subnet_2.subnet_id 
+  module.public_subnet_1.subnet_id,
+  module.public_subnet_2.subnet_id 
   ]
- alb_security_groups = [module.app_sg.sg_id]
+ alb_security_groups = [module.alb_sg.sg_id]
  alb_name = "App-ALB"
 
 }
@@ -180,11 +198,64 @@ module "alb_listener" {
   lb_arn = module.app_alb.alb_arn
   cert_arn = module.cert.acm_cert_arn
   tg_arn = module.target_group.target_group_arn
+  depends_on = [module.cert_validation]
+  
 }
 
 module "cert" {
   source = "./modules/cert"
   domain_name = "jackaws.com"
+  subject_alternative_names = ["www.jackaws.com"]
 }
 
-  
+
+data "aws_route53_zone" "your_zone" {
+  name         = "jackaws.com"
+  private_zone = false
+}
+
+resource "aws_route53_record" "cert_validation" {
+  for_each = {
+    for dvo in module.cert.domain_validation_options : dvo.domain_name => {
+      name    = dvo.resource_record_name
+      type    = dvo.resource_record_type
+      record  = dvo.resource_record_value
+      zone_id = data.aws_route53_zone.your_zone.zone_id
+    }
+  }
+
+  zone_id = each.value.zone_id
+  name    = each.value.name
+  type    = each.value.type
+  records = [each.value.record]
+  ttl     = 300
+}
+
+module "cert_validation" {
+  source = "./modules/cert_validation"
+  certificate_arn = module.cert.acm_cert_arn
+
+  validation_record_fqdns = [
+    for record in aws_route53_record.cert_validation : record.fqdn
+  ]
+}
+
+/*
+module "a_record_alias_naked_domain" {
+  source = "./modules/route_53_records"
+  name = "jackaws.com"
+  type = "A"
+  alias_name = module.app_alb.alb_dns_name
+  zone_id = module.app_alb.alb_zone_id
+  depends_on = [module.app_alb]
+}
+
+module "a_record_alias_wwws_domain" {
+  source = "./modules/route_53_records"
+  name = "www.jackaws.com"
+  type = "A"
+  alias_name = module.app_alb.alb_dns_name
+  zone_id = module.app_alb.alb_zone_id
+  depends_on = [module.app_alb]
+}
+*/
