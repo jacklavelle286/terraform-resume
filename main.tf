@@ -152,7 +152,6 @@ module "outbound_app_sg_rule_all" {
 
 # app resources
 
-/*
 
 module "app_launch_template" {
   source = "./modules/launch_template"
@@ -202,7 +201,7 @@ module "alb_listener" {
   depends_on = [module.cert_validation]
   
 }
-*/
+
 module "cert" {
   source = "./modules/cert"
   domain_name = "jackaws.com"
