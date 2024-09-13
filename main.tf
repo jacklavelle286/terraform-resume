@@ -117,7 +117,7 @@ module "inbound_alb_sg_rule_https_from_web" {
 module "outbound_alb_sg_rule_all" {
   source = "./modules/security_group_rules/egress"
    cidr_ipv4 = "0.0.0.0/0"
-   security_group_id = module.alb_sg.id
+   security_group_id = module.alb_sg.sg_id
    from_port = 0
    to_port = 0
    ip_protocol = "-1"
