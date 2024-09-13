@@ -249,7 +249,7 @@ module "a_record_alias_naked_domain" {
   zone_id = data.aws_route53_zone.your_zone
 }
 
-module "a_record_alias_naked_domain" {
+module "a_record_alias_wwws_domain" {
   source = "./modules/route_53_records"
   name = "www.jackaws.com"
   type = "A"
