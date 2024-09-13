@@ -118,8 +118,8 @@ module "outbound_alb_sg_rule_all" {
   source = "./modules/security_group_rules/egress"
    cidr_ipv4 = "0.0.0.0/0"
    security_group_id = module.alb_sg.sg_id
-   from_port = 0
-   to_port = 0
+   from_port = null
+   to_port = null
    ip_protocol = "-1"
 }
 
@@ -144,15 +144,15 @@ module "outbound_app_sg_rule_all" {
   source = "./modules/security_group_rules/egress"
    cidr_ipv4 = "0.0.0.0/0"
    security_group_id = module.app_sg.sg_id
-   from_port = 0
-   to_port = 0
+   from_port = null
+   to_port = null
    ip_protocol = "-1"
 }
 
 
 # app resources
 
-
+/*
 
 module "app_launch_template" {
   source = "./modules/launch_template"
@@ -202,7 +202,7 @@ module "alb_listener" {
   depends_on = [module.cert_validation]
   
 }
-
+*/
 module "cert" {
   source = "./modules/cert"
   domain_name = "jackaws.com"
