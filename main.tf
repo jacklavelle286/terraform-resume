@@ -114,6 +114,15 @@ module "inbound_alb_sg_rule_https_from_web" {
 }
 
 
+module "outbound_alb_sg_rule_all" {
+  source = "./modules/security_group_rules/egress"
+   cidr_ipv4 = "0.0.0.0/0"
+   security_group_id = module.alb_sg.id
+   from_port = 0
+   to_port = 0
+   ip_protocol = "-1"
+}
+
 module "app_sg" {
   source = "./modules/security_group"
   security_group_name = "app-security-group"
@@ -129,6 +138,15 @@ module "inbound_app_sg_rule_http_from_alb" {
   ip_protocol       = "tcp"
   inbound_sg_id     = module.alb_sg.sg_id
   cidr_ipv4         = null  # Set to null since inbound_sg_id is used
+}
+
+module "outbound_app_sg_rule_all" {
+  source = "./modules/security_group_rules/egress"
+   cidr_ipv4 = "0.0.0.0/0"
+   security_group_id = module.app_sg.sg_id
+   from_port = 0
+   to_port = 0
+   ip_protocol = "-1"
 }
 
 
