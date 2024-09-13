@@ -184,7 +184,7 @@ module "app_alb" {
 
 }
 
-
+/*
 module "target_group" {
   source = "./modules/target_group"
   port = 80
@@ -201,7 +201,7 @@ module "alb_listener" {
   depends_on = [module.cert_validation]
   
 }
-
+*/
 module "cert" {
   source = "./modules/cert"
   domain_name = "jackaws.com"
