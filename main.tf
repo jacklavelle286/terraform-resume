@@ -152,6 +152,7 @@ module "outbound_app_sg_rule_all" {
 
 # app resources
 
+/*
 
 module "app_launch_template" {
   source = "./modules/launch_template"
@@ -184,7 +185,7 @@ module "app_alb" {
 
 }
 
-/*
+
 module "target_group" {
   source = "./modules/target_group"
   port = 80
