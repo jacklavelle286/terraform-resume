@@ -151,7 +151,7 @@ module "outbound_app_sg_rule_all" {
 
 
 # app resources
-
+/*
 
 module "app_launch_template" {
   source = "./modules/launch_template"
@@ -247,6 +247,7 @@ module "a_record_alias_naked_domain" {
   type = "A"
   alias_name = module.app_alb.alb_dns_name
   zone_id = module.app_alb.alb_zone_id
+  depends_on = [module.app_alb]
 }
 
 module "a_record_alias_wwws_domain" {
@@ -255,4 +256,7 @@ module "a_record_alias_wwws_domain" {
   type = "A"
   alias_name = module.app_alb.alb_dns_name
   zone_id = module.app_alb.alb_zone_id
+  depends_on = [module.app_alb]
 }
+
+*/
