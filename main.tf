@@ -184,7 +184,7 @@ module "app_alb" {
 
 }
 
-
+/*
 module "target_group" {
   source = "./modules/target_group"
   port = 80
@@ -192,7 +192,7 @@ module "target_group" {
   protocol = "HTTP"
   aws_lb_tg_name = "app-target-group"
 }
-
+*/
 module "alb_listener" {
   source = "./modules/alb_listener"
   lb_arn = module.app_alb.alb_arn
