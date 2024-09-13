@@ -179,7 +179,7 @@ module "app_alb" {
   module.public_subnet_1.subnet_id,
   module.public_subnet_2.subnet_id 
   ]
- alb_security_groups = [module.app_sg.sg_id]
+ alb_security_groups = [module.alb_sg.sg_id]
  alb_name = "App-ALB"
 
 }
