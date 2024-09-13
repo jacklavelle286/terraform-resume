@@ -1,7 +1,7 @@
 resource "aws_lb_listener" "this" {
   load_balancer_arn = var.lb_arn
-  port = 443
-  protocol = "HTTPS"
+  port = 80
+  protocol = "HTTP"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
   certificate_arn   = var.cert_arn
 
