@@ -258,4 +258,3 @@ module "a_record_alias_wwws_domain" {
   zone_id = module.app_alb.alb_zone_id
   depends_on = [module.app_alb]
 }
-*/
