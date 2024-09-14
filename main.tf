@@ -151,7 +151,7 @@ module "outbound_app_sg_rule_all" {
 
 
 # app resources
-
+/*
 
 module "app_launch_template" {
   source = "./modules/launch_template"
@@ -240,7 +240,7 @@ module "cert_validation" {
   ]
 }
 
-/*
+
 module "a_record_alias_naked_domain" {
   source = "./modules/route_53_records"
   name = "jackaws.com"
