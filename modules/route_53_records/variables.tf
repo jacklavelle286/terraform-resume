@@ -13,3 +13,7 @@ variable "type" {
 variable "alias_name" {
   type = string
 }
+
+variable "alias_zone_id" {
+  type = string
+}
