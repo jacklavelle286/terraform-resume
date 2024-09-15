@@ -241,3 +241,20 @@ module "cert_validation" {
 }
 
 
+module "a_record_alias_naked_domain" {
+  source = "./modules/route_53_records"
+  name = "jackaws.com"
+  type = "A"
+  alias_name = module.app_alb.alb_dns_name
+  zone_id = module.app_alb.alb_zone_id
+  depends_on = [module.app_alb]
+}
+
+module "a_record_alias_wwws_domain" {
+  source = "./modules/route_53_records"
+  name = "www.jackaws.com"
+  type = "A"
+  alias_name = module.app_alb.alb_dns_name
+  zone_id = module.app_alb.alb_zone_id
+  depends_on = [module.app_alb]
+}
