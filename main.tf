@@ -152,7 +152,7 @@ module "outbound_app_sg_rule_all" {
 
 # app resources
 
-/*
+
 module "app_launch_template" {
   source = "./modules/launch_template"
   app_image_id = var.latest_app_image_id
@@ -241,4 +241,3 @@ module "cert_validation" {
 }
 
 
-*/
