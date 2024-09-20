@@ -168,3 +168,69 @@ module "app_alb" {
 
 }
 
+# microservices
+
+# page counter microservice
+
+module "view_counter_lambda_function_role" {
+  source = "./modules/iam_role"
+  role_name = "view_counter_execution_role"
+  assume_role_policy  = data.aws_iam_policy_document.lambda_assume_role.json
+  policy_name         = "lambda_execution_policy"
+  policy_description  = "Policy for Lambda execution role"
+  policy_document     = data.aws_iam_policy_document.lambda_policy.json
+}
+
+
+data "aws_iam_policy_document" "lambda_assume_role" {
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+  }
+}
+
+data "aws_iam_policy_document" "lambda_policy" {
+  statement {
+    actions   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
+    resources = ["arn:aws:logs:*:*:*"]
+  }
+
+  statement {
+    actions   = ["dynamodb:UpdateItem", "dynamodb:GetItem", "dynamodb:DescribeTable"]
+    resources = [module.view_counter_dynamodb.dynamodb_table_arn]
+  }
+}
+
+
+module "view_counter_lambda_function" {
+  source = "./modules/lambda"  # Path to your module
+  role          = module.view_counter_lambda_function_role.role_arn
+  function_name = "view_counter_function"
+  handler       = "index.handler"
+  runtime       = "python3.12"
+  source_dir = "./modules/lambda/code/view.py"
+
+  env_map = {
+    DynamoDBTableName = module.view_counter_dynamodb.dynamodb_table_name
+  }
+  create_function_url = true
+}
+
+module "view_counter_dynamodb" {
+  source = "./modules/dynamodb_table"
+  table_name = "view_counter_dynamodb_table"
+  dynamodb_attributes = [
+    {
+      name = "PostID"
+      type = "S"
+    },
+    {
+      name = "AuthorID"
+      type = "S"
+    }
+  ]
+}
