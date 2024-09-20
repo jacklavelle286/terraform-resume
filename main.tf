@@ -224,12 +224,9 @@ module "view_counter_dynamodb" {
   source = "./modules/dynamodb_table"
   table_name = "view_counter_dynamodb_table"
   dynamodb_attributes = [
+  
     {
       name = "PostID"
-      type = "S"
-    },
-    {
-      name = "AuthorID"
       type = "S"
     }
   ]
