@@ -19,11 +19,6 @@ variable "runtime" {
   type = string
 }
 
-variable "env_map" {
-  type = map(string)
-  default = {}
-}
-
 variable "source_dir" {
   type        = string
   description = "The directory containing your Lambda function code"
